@@ -9,27 +9,23 @@
 
 	<!-- 登録ボタン -->
 	<div>
-		<a th:href="@{/user/add}">新規登録はこちら</a>
+		<a th:href="@{/user/add}"><button type="button">新規登録</button></a>
 	</div>
 
 	<!-- 一覧 -->
-	<table>
-		<thead>
+	<table border="1">
 			<tr>
 				<th>ID</th>
 				<th>名前</th>
 				<th>住所</th>
 				<th>電話番号</th>
 			</tr>
-		</thead>
-		<tbody>
 			<tr th:each="user : ${userlist}" th:object="${user}">
 				<td th:text="${user.id}"></td>
 				<td th:text="${user.name}"></td>
 				<td th:text="${user.address}"></td>
 				<td th:text="${user.tel}"></td>
 			</tr>
-		</tbody>
 	</table>
 </body>
 </html>

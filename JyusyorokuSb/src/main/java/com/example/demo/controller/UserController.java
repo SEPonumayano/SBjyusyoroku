@@ -52,7 +52,23 @@ public class UserController {
 		}
 
 		userService.create(userRequest);
-		return "redirect:/user/list";
+		return "user/addCheck";
 	}
 
+	//登録確認ページ
+	@RequestMapping(value="/user/addCheck" ,method=RequestMethod.POST)
+		public String addCheck(@ModelAttribute User user, Model model) {
+
+		model.addAttribute("User",user);
+			return "addCheck";
+		}
+
+	//登録完了
+	@RequestMapping(value = "/user/creat", method = RequestMethod.POST)
+	public String creat(@Validated @ModelAttribute UserRequest userRequest, BindingResult result, Model model) {
+		userService.creat(userRequest);
+		return "redirect:/user/list";
+	}
 }
+
+

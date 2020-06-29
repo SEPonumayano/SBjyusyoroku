@@ -34,7 +34,7 @@ public class UserRequest implements Serializable {
 		this.address = address;
 	}
 
-	//電話番号エラー
+	//電話番号エラー/空文字のエラー残ってる
 	@Pattern(regexp ="^[0-9]{3}-[0-9]{4}-[0-9]{4}$" , message="電話番号は「000-0000-0000」の形式で入力してください")
 	private String tel;
 	

@@ -22,13 +22,23 @@ public class UserService {
 		return userRepository.findAll();
 	}
 
-	//登録
+	//登録確認
 	public void create(UserRequest userRequest) {
+		User user = new User();
+		user.setName(userRequest.getName());
+		user.setAddress(userRequest.getAddress());
+		user.setTel(userRequest.getTel());
+		//userRepository.save(user);
+	}
+
+	//登録
+	public void creat(UserRequest userRequest) {
 		User user = new User();
 		user.setName(userRequest.getName());
 		user.setAddress(userRequest.getAddress());
 		user.setTel(userRequest.getTel());
 		userRepository.save(user);
 	}
+
 
 }

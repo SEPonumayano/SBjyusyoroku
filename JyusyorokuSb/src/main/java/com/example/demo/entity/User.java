@@ -61,7 +61,7 @@ public class User implements Serializable {
 		return tel;
 	}
 
-	public void setTel(String Tel) {
+	public void setTel(String tel) {
 		this.tel = tel;
 	}
 
