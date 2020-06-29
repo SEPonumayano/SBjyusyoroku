@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>住所録登録</title>
+</head>
+<body>
+	<h1>住所録管理システム：住所録登録</h1>
+	<!-- 転送先 -->
+	<form th:action="@{/user/create}" th:object="${UserRequest}" th:method="post">
+		<br />
+
+		<!-- 名前 -->
+		名前*：<input type="text" name="name" > <br />
+
+		<!-- 住所 -->
+		住所*：<input type="text" name="address"> <br />
+		<!-- 電話番号 -->
+
+		電話番号：<input type="tel" name="tel"> <br />
+
+		<!-- エラー表示 -->
+		<table>
+			<tr th:if="${validationError}" th:each="error : ${validationError}">
+				<td style="color: red;" th:text="${error}"></td>
+			</tr>
+		</table>
+		<br /> <a href="/user/list">キャンセル</a> <input type="submit" value="登録">
+	</form>
+</body>
+</html>

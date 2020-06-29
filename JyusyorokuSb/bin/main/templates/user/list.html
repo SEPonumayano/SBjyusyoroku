@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>住所録一覧</title>
+</head>
+<body>
+<h1>住所録管理システム：住所録一覧</h1>
+
+	<!-- 登録ボタン -->
+	<div>
+		<a th:href="@{/user/add}">新規登録はこちら</a>
+	</div>
+
+	<!-- 一覧 -->
+	<table>
+		<thead>
+			<tr>
+				<th>ID</th>
+				<th>名前</th>
+				<th>住所</th>
+				<th>電話番号</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr th:each="user : ${userlist}" th:object="${user}">
+				<td th:text="${user.id}"></td>
+				<td th:text="${user.name}"></td>
+				<td th:text="${user.address}"></td>
+				<td th:text="${user.tel}"></td>
+			</tr>
+		</tbody>
+	</table>
+</body>
+</html>
