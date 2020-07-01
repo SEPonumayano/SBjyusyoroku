@@ -31,13 +31,21 @@ public class UserService {
 		//userRepository.save(user);
 	}
 
-	//登録
+	//DB登録
 	public void creat(UserRequest userRequest) {
+		userRepository.save(CreateUser(userRequest));
+	}
+
+	//登録データ
+	public User CreateUser(UserRequest userRequest) {
 		User user = new User();
 		user.setName(userRequest.getName());
 		user.setAddress(userRequest.getAddress());
-		user.setTel(userRequest.getTel());
-		userRepository.save(user);
+		String tel1=userRequest.getTel();
+		String tel=tel1.replace("-","");
+		user.setTel(tel);
+
+		return user;
 	}
 
 
