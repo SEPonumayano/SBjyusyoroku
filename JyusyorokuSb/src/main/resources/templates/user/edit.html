@@ -1,13 +1,42 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
 <head>
 <meta charset="UTF-8">
 <title>住所録編集画面</title>
 </head>
 <body>
-<h1>住所録管理システム：住所録編集</h1>
-<!-- ボタン -->
-<input type="submit" value="登録">
-<a th:href="@{/user/list}"><button type="button">戻る</button></a>
+
+	<h1>住所録管理システム：住所録編集</h1>
+	<!-- 転送先 -->
+	<form th:action="@{/user/createe}" th:object="${UserUpdateRequest}"
+		th:method="post">
+		<br />
+		<!-- 名前 -->
+
+		名前*：<input type="text" name="name" th:text="${name}"> <br />
+
+		<!-- 住所 -->
+		住所*：<input type="text" name="address"> <br />
+
+		<!-- 電話番号 -->
+		電話番号：<input type="tel" name="tel"> <br />
+
+		<!-- ID -->
+		<p th:text="${id}"></p>
+		<!-- <input type="hidden" name="id" th:field="${id}">
+
+		<!-- エラー表示 -->
+		<table>
+			<tr th:if="${validationError}" th:each="error : ${validationError}">
+				<td style="color: red;" th:text="${error}"></td>
+			</tr>
+		</table>
+
+		<!-- ボタン -->
+		<input type="submit" value="確認">
+		<a th:href="@{/user/list}"><button type="button">戻る</button></a>
+	</form>
+
 </body>
 </html>

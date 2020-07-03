@@ -6,8 +6,34 @@
 </head>
 <body>
 <h1>住所録管理システム：住所録編集</h1>
+<!-- 転送先 -->
+	<form th:action="@{/user/creatt}" th:object="${userUpdateRequest}" th:method="post">
+
+		<!-- 名前 -->
+		名前*：
+		<p th:text="*{name}"></p>
+		<br />
+
+		<!-- 住所 -->
+		住所*：
+		<p th:text="*{address}"></p>
+		<br />
+
+		<!-- 電話番号 -->
+		電話番号：
+		<p th:text="*{tel}"></p>
+		<br />
+		<p th:text="*{id}">
+
+		<!--  hidden -->
+		<input type="hidden" name="name" th:field="*{name}">
+		<input type="hidden" name="address" th:field="*{address}">
+		<input type="hidden" name="tel" th:field="*{tel}">
+		<input type="hidden" th:field="*{id}">
+
 <!-- ボタン -->
 <input type="submit" value="登録">
 <a th:href="@{/user/edit}"><button type="button">戻る</button></a>
+</form>
 </body>
 </html>

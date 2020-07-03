@@ -25,6 +25,9 @@
 				<td th:text="${user.name}"></td>
 				<td th:text="${user.address}"></td>
 				<td th:text="${user.tel}"></td>
+				<td><a th:href="@{/user/{id}/edit(id=*{id})}" >
+				<input type="hidden" name="id" th:value="${user.id}">
+				<input type="submit" name="edit" value="編集"></a></td>
 			</tr>
 	</table>
 </body>

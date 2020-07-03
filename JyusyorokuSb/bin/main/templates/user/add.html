@@ -7,8 +7,7 @@
 <body>
 	<h1>住所録管理システム：住所録登録</h1>
 	<!-- 転送先 -->
-	<form th:action="@{/user/create}" th:object="${UserRequest}" th:method="post">
-		<br />
+	<form th:action="@{/user/create}" th:object="${UserRequest}" th:method="post"><br />
 
 		<!-- 名前 -->
 		名前*：<input type="text" name="name" > <br />
