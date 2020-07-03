@@ -9,22 +9,23 @@
 
 	<h1>住所録管理システム：住所録編集</h1>
 	<!-- 転送先 -->
-	<form th:action="@{/user/createe}" th:object="${UserUpdateRequest}"
+	<form th:action="@{/user/{id}/createe(id=*{id})}" th:object="${userUpdateRequest}"
 		th:method="post">
 		<br />
 		<!-- 名前 -->
 
-		名前*：<input type="text" name="name" th:text="${name}"> <br />
+		名前*：<input type="text" name="name" th:field="*{name}" > <br />
+		<p th:text="${name}"></p>
 
 		<!-- 住所 -->
-		住所*：<input type="text" name="address"> <br />
+		住所*：<input type="text" name="address" th:field="*{address}"> <br />
 
 		<!-- 電話番号 -->
-		電話番号：<input type="tel" name="tel"> <br />
+		電話番号：<input type="tel" name="tel" th:field="*{tel}"> <br />
 
-		<!-- ID -->
+		<!-- ID ->
 		<p th:text="${id}"></p>
-		<!-- <input type="hidden" name="id" th:field="${id}">
+		 <input type="hidden" name="id" th:field="${id}">
 
 		<!-- エラー表示 -->
 		<table>

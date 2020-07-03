@@ -20,13 +20,15 @@ public class UserService {
 	private UserRepository userRepository;
 
 	public List<User> searchAll() {
-		return userRepository.findAll();
+		return userRepository.searchAll();
 	}
 
 	//主キー
 	public User findById(Long id) {
 		return userRepository.findById(id).get();
 	}
+
+
 
 	//-----------------------------------------------------
 
@@ -52,6 +54,7 @@ public class UserService {
 		String tel1=userRequest.getTel();
 		String tel=tel1.replace("-","");
 		user.setTel(tel);
+		user.setDelete_flg("0");
 
 		return user;
 	}
@@ -60,8 +63,7 @@ public class UserService {
 
 	//編集確認
 	public void createe(UserUpdateRequest userUpdateRequest) {
-		//User user = new User();
-		User user = findById(userUpdateRequest.getId());
+		User user = new User();
 
 	    //user.setId(userUpdateRequest.getId());
 		user.setName(userUpdateRequest.getName());
@@ -75,21 +77,31 @@ public class UserService {
 
 			user.setName(userUpdateRequest.getName());
 			user.setAddress(userUpdateRequest.getAddress());
-			user.setTel(userUpdateRequest.getTel());
+			String tel1=userUpdateRequest.getTel();
+			String tel=tel1.replace("-","");
+			user.setTel(tel);
+			user.setDelete_flg("0");
+
 			userRepository.save(user);
 		}
 
-	//更新データ
-	public User CreateeUser(UserUpdateRequest userUpdateRequest) {
-		User user = findById(userUpdateRequest.getId());
-		user.setName(userUpdateRequest.getName());
-		user.setAddress(userUpdateRequest.getAddress());
-		String tel1=userUpdateRequest.getTel();
-		String tel=tel1.replace("-","");
-		user.setTel(tel);
+	//-----------------------------------------------------
 
-		return user;
-	}
+	//削除
+		public void creattt(UserUpdateRequest userUpdateRequest) {
+			User user=findById(userUpdateRequest.getId());
+
+			user.setName(userUpdateRequest.getName());
+			user.setAddress(userUpdateRequest.getAddress());
+			String tel1=userUpdateRequest.getTel();
+			String tel=tel1.replace("-","");
+			user.setTel(tel);
+			user.setDelete_flg("1");
+			userRepository.save(user);
+		}
+
+
+
 
 
 }

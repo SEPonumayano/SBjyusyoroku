@@ -34,6 +34,11 @@ public class UserController {
 		return "user/list";
 	}
 
+	//住所検索
+
+
+	//-----------------------------------------------------
+
 	//登録ページ
 	@GetMapping(value = "/user/add")
 	public String displayAdd(Model model) {
@@ -75,10 +80,11 @@ public class UserController {
 		return "redirect:/user/list";
 	}
 
+	//-----------------------------------------------------
 
 	//編集ページ
-	@GetMapping("/user/{id}/edit")
-	public String displayEdit(@PathVariable Long id,Model model) {
+	@RequestMapping("/user/{id}/edit")
+	public String displayEdit(@PathVariable("id") Long id,Model model) {
 		User user =userService.findById(id);
 
 		model.addAttribute("userUpdateRequest",user);
@@ -86,16 +92,10 @@ public class UserController {
 	}
 
 	//編集エラー出力
-	@RequestMapping(value="/user/createe",method=RequestMethod.POST)
-	public String createe(@Validated @ModelAttribute UserUpdateRequest userUpdateRequest,BindingResult result,Model model) {
+	@RequestMapping(value="/user/{id}/createe",method=RequestMethod.POST)
+	public String createe(@Validated @ModelAttribute UserUpdateRequest userUpdateRequest,BindingResult result,@PathVariable Long id,Model model) {
 
-		//User user =userService.findById(id);
-
-		//UserUpdateRequest userUpdateRequest=new UserUpdateRequest();
-		//user.setId(user.getId());
-		//user.setName(user.getName());
-		//user.setAddress(user.getAddress());
-		//user.setTel(user.getTel());
+		User user =userService.findById(id);
 
 		if(result.hasErrors()) {
 			List<String>errorList=new ArrayList<String>();
@@ -112,33 +112,37 @@ public class UserController {
 
 	//編集確認ページ
 	@RequestMapping(value="/user/{id}/editCheck" ,method=RequestMethod.POST)
-	public String editCheck(@ModelAttribute UserUpdateRequest userUpdateRequest, Model model) {
+	public String editCheck(@PathVariable Long id,@ModelAttribute UserUpdateRequest userUpdateRequest, Model model) {
+		User user =userService.findById(id);
 
-
-	model.addAttribute("UserUpdateRequest",  userUpdateRequest);
+		model.addAttribute("userUpdateRequest",  userUpdateRequest);
 		return "user/editCheck";
 	}
 
 	//更新完了
 		@RequestMapping(value = "/user/creatt", method = RequestMethod.POST)
 		public String creatt(@Validated @ModelAttribute UserUpdateRequest userUpdateRequest,BindingResult result, Model model) {
-			if(result.hasErrors()) {
-				List<String>errorList=new ArrayList<String>();
-				for(ObjectError error:result.getAllErrors()) {
-					errorList.add(error.getDefaultMessage());
-				}
-
-				model.addAttribute("validationError",errorList);
-				return "user/edit";
-			}
 			userService.creatt(userUpdateRequest);
 			return String.format("redirect:/user/list");
 		}
 
-			//model.addAttribute("UserRequest",  userRequest);
-			//userService.creatt(userUpdateRequest);
-			//return "redirect:/user/list";
-		//}
+	//-----------------------------------------------------
+
+	//削除ページ
+		@RequestMapping("/user/{id}/delete")
+		public String displaydelete(@PathVariable("id") Long id,Model model) {
+			User user =userService.findById(id);
+
+			model.addAttribute("userUpdateRequest",user);
+			return "user/delete";
+		}
+
+	//更新完了
+		@RequestMapping(value = "/user/dateDelete", method = RequestMethod.POST)
+		public String dateDelete(@Validated @ModelAttribute UserUpdateRequest userUpdateRequest,BindingResult result, Model model) {
+			userService.creattt(userUpdateRequest);
+			return String.format("redirect:/user/list");
+		}
 }
 
 

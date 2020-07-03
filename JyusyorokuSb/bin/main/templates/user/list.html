@@ -12,6 +12,9 @@
 		<a th:href="@{/user/add}"><button type="button">新規登録</button></a>
 	</div>
 
+	<!-- 住所検索 ->
+	住所：<form th:action="#" th:method="post"><input type="text" name="sarch"><input type=submit value="検索"></form>
+
 	<!-- 一覧 -->
 	<table border="1">
 			<tr>
@@ -25,10 +28,17 @@
 				<td th:text="${user.name}"></td>
 				<td th:text="${user.address}"></td>
 				<td th:text="${user.tel}"></td>
-				<td><a th:href="@{/user/{id}/edit(id=*{id})}" >
+				<td>
+				<form th:action="@{/user/{id}/edit(id=*{id})}" th:method="post">
 				<input type="hidden" name="id" th:value="${user.id}">
-				<input type="submit" name="edit" value="編集"></a></td>
+				<input type="submit" value="編集"></form><!-- </a>--></td>
+				<td>
+				<form th:action="@{/user/{id}/delete(id=*{id})}" th:method="post">
+				<input type="hidden" name="id" th:value="${user.id}">
+				<input type="submit" value="削除"></form><!-- </a>--></td>
 			</tr>
 	</table>
+
+	<!-- server.port=8090 -->
 </body>
 </html>
