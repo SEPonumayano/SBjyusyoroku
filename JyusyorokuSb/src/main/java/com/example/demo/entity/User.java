@@ -57,9 +57,12 @@ public class User implements Serializable {
 	@Column(name = "tel")
 	private String tel;
 
+	//ハイフン入れ不要
 	//Pattern p = Pattern.compile("(\\d{3})(\\d{4})(\\d{4})");
-	//Matcher m = p.matcher(tel);
-	//String Tel = m.replaceAll("$1-$2-$3");
+	//Matcher m =p.matcher(tel);
+	//Matcher m =p.matcher(rs.getString("tel"));
+	//String tel1=m.replaceAll("$1-$2-$3");
+
 
 	public String getTel() {
 		return tel;

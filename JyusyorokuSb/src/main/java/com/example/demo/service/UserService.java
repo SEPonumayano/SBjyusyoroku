@@ -29,15 +29,9 @@ public class UserService {
 	}
 
 	//検索
-	//public User fingBySearch(String keywords) {
-	//	return userRepository.findBySearch(keywords).get();
-	//}
-
-	public List<User> searchpoint() {
-		//User user = new User();
-
-		//user.setParameter(userRequest.getKeywords());
-		return userRepository.searchPoint();
+	public  List<User> searchpoint(String keyword) {
+		List<User> result = userRepository.searchPoint(keyword);
+		return result;
 	}
 
 

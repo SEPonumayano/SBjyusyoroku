@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.ModelAndView;
 
 import com.example.demo.dto.UserRequest;
 import com.example.demo.dto.UserUpdateRequest;
@@ -31,22 +32,23 @@ public class UserController {
 	@GetMapping(value = "/user/list")
 	public String displayList(Model model) {
 		List<User> userlist = userService.searchAll();
+
 		model.addAttribute("userlist", userlist);
 		return "user/list";
 	}
 
 	//住所検索
 	@RequestMapping(value ="/user/search" ,method = RequestMethod.POST)
-	public String search(@RequestParam("keywords") String keywords,@ModelAttribute UserRequest userRequest,Model model) {
-		UserRequest.setKeywords(keywords);
+	public ModelAndView search(ModelAndView mav,@RequestParam(name="keyword") String keyword) {
 
-		List<User> userlist = userService.searchpoint();
-		//User user=UserRepository.setParameter("keywords", keywords);
-		model.addAttribute("userlist", userlist);
-		return "user/list";
+		mav.setViewName("/user/list");
+		mav.addObject("keyword",keyword);
+		List<User> result = userService.searchpoint(keyword);
+		mav.addObject("userlist",result);
+		//mav.addObject("resultSize",result.size());
+
+		return mav;
 	}
-
-
 
 	//-----------------------------------------------------
 
@@ -106,7 +108,7 @@ public class UserController {
 	@RequestMapping(value="/user/{id}/createe",method=RequestMethod.POST)
 	public String createe(@Validated @ModelAttribute UserUpdateRequest userUpdateRequest,BindingResult result,@PathVariable Long id,Model model) {
 
-		User user =userService.findById(id);
+		//User user =userService.findById(id);
 
 		if(result.hasErrors()) {
 			List<String>errorList=new ArrayList<String>();
@@ -124,7 +126,7 @@ public class UserController {
 	//編集確認ページ
 	@RequestMapping(value="/user/{id}/editCheck" ,method=RequestMethod.POST)
 	public String editCheck(@PathVariable Long id,@ModelAttribute UserUpdateRequest userUpdateRequest, Model model) {
-		User user =userService.findById(id);
+		//User user =userService.findById(id);
 
 		model.addAttribute("userUpdateRequest",  userUpdateRequest);
 		return "user/editCheck";

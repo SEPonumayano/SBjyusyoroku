@@ -12,17 +12,18 @@ public class UserRequest implements Serializable {
 	private String name;
 	private String address;
 	private String tel;
-	private String keywords;
+	private String keyword;
 
 
 
-	public String getKeywords() {
-		return keywords;
+	public String getKeyword() {
+		return keyword;
 	}
 
-	public static void setKeywords(String keywords) {
-		String Keywords = keywords;
+	public void setKeyword(String keyword) {
+		this.keyword = keyword;
 	}
+
 
 	//名前エラー
 	@NotEmpty(message = "名前は必須項目です")
@@ -38,7 +39,6 @@ public class UserRequest implements Serializable {
 	//住所エラー
 	@NotEmpty(message = "住所は必須項目です")
 	@Size(max = 20, message = "住所は全角40文字以内で入力してください")
-	//private String address;
     public String getAddress() {
 		return address;
 	}
@@ -48,9 +48,9 @@ public class UserRequest implements Serializable {
 	}
 
 	//電話番号エラー/空文字のエラー残ってる
+	@Size(min=0)
 	@Pattern(regexp ="^[0-9]{3}-[0-9]{4}-[0-9]{4}$" , message="電話番号は「000-0000-0000」の形式で入力してください")
-	//private String tel;
-    public String getTel() {
+	public String getTel() {
 		return tel;
 	}
 
