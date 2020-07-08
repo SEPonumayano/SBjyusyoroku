@@ -12,8 +12,8 @@
 		<a th:href="@{/user/add}"><button type="button">新規登録</button></a>
 	</div>
 
-	<!-- 住所検索 ->
-	住所：<form th:action="#" th:method="post"><input type="text" name="sarch"><input type=submit value="検索"></form>
+	<!-- 住所検索 -->
+	住所：<form th:action="@{/user/search}" th:method="post"><input type="text" name="keywords"><input type=submit value="検索"></form>
 
 	<!-- 一覧 -->
 	<table border="1">

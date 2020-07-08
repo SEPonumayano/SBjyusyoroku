@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.example.demo.dto.UserRequest;
 import com.example.demo.dto.UserUpdateRequest;
@@ -35,6 +36,16 @@ public class UserController {
 	}
 
 	//住所検索
+	@RequestMapping(value ="/user/search" ,method = RequestMethod.POST)
+	public String search(@RequestParam("keywords") String keywords,@ModelAttribute UserRequest userRequest,Model model) {
+		UserRequest.setKeywords(keywords);
+
+		List<User> userlist = userService.searchpoint();
+		//User user=UserRepository.setParameter("keywords", keywords);
+		model.addAttribute("userlist", userlist);
+		return "user/list";
+	}
+
 
 
 	//-----------------------------------------------------

@@ -12,6 +12,17 @@ public class UserRequest implements Serializable {
 	private String name;
 	private String address;
 	private String tel;
+	private String keywords;
+
+
+
+	public String getKeywords() {
+		return keywords;
+	}
+
+	public static void setKeywords(String keywords) {
+		String Keywords = keywords;
+	}
 
 	//名前エラー
 	@NotEmpty(message = "名前は必須項目です")
