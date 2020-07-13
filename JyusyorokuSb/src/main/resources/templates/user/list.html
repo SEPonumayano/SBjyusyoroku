@@ -39,6 +39,37 @@
 			</tr>
 	</table>
 
+	<!-- ページング -->
+	<nav aria-label="Page navigation example">
+	<ul>
+	<li><a th:herf="@{/?page=1}" aria-label="Previous">
+	<span aria-hidden="true">＜＜</span>
+	</a>
+	</li>
+	<li>
+	<a th:href="@{/?page={page} (page=${pagination.prevBlock})}" aria-label="previous">
+	<span aria-hidden="true">＜</span>
+	</a>
+	</li>
+	<th:block th:with="start = ${pagination.startPage}, end=${pagination.endPage}">
+	<li th:with="start = ${pagination.startPage}, end=${pagination.endPage}"
+	th:each="pageButton:${#numbers.sequence(start,end)}">
+	<a th:href="@{/?page={page} (page=${pageButton})}" th:text=${pageButton}></a>
+	</li>
+	</th:block>
+	<li>
+	<a th:herf="@{?page={page}(page=${pagination.nextBlock})}" aria-label="Next">
+	<span aria-hidden="true">＞</span>
+	</a>
+	</li>
+	<li>
+    <a th:herf="@{?page={page}(page=${pagination.totalPageCnt})}" aria-label="previous">
+	<span aria-hidden="true">＞＞</span>
+	</a>
+	</li>
+	</ul>
+	</nav>
+
 	<!-- server.port=8090 -->
 </body>
 </html>

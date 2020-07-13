@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -16,8 +15,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.servlet.ModelAndView;
 
+import com.example.demo.dto.Pagination;
 import com.example.demo.dto.UserRequest;
 import com.example.demo.dto.UserUpdateRequest;
 import com.example.demo.dto.aGroup;
@@ -40,25 +39,48 @@ public class UserController {
 	//}
 
 	//一覧ページ
-	@RequestMapping //(value = "/user/list",method=RequestMethod.GET)
-	public String displayList(Model model,Pageable pageable) {
-		List<User> userlist = userService.searchAll(pageable);
-		model.addAttribute("page", userlist);
+	@GetMapping (value = "/user/list")
+	public String displayList(Model model,@RequestParam(defaultValue="1") int page) {
+
+		//一覧
+		List<User> userlist =userService.searchAll();
+
+		//件数
+		int totalListCnt =userService.findAllCnt();
+		Pagination pagination =new Pagination(totalListCnt,page);
+		int startIndex =pagination.getStartIndex();
+		int pageSize =pagination.getPageSize();
+
+		//ブロック位置
+		List<User> listCount =userService.findListPaging(startIndex,pageSize);
+
 		model.addAttribute("userlist", userlist);
+		model.addAttribute("listCount", listCount);
+		model.addAttribute("pagination",pagination);
+
 		return "user/list";
 	}
 
 	//住所検索
-	@RequestMapping(value ="/user/search" ,method = RequestMethod.POST)
-	public ModelAndView search(ModelAndView mav,@RequestParam(name="keyword") String keyword) {
+	//@RequestMapping(value ="/user/search" ,method = RequestMethod.POST)
+	//public ModelAndView search(ModelAndView mav,@RequestParam(name="keyword") String keyword) {
 
-		mav.setViewName("/user/list");
-		mav.addObject("keyword",keyword);
-		List<User> result = userService.searchpoint(keyword);
-		mav.addObject("userlist",result);
+		//mav.setViewName("/user/list");
+		//mav.addObject("keyword",keyword);
+		//List<User> result = userService.searchpoint(keyword);
+		//mav.addObject("userlist",result);
 		//mav.addObject("resultSize",result.size());
 
-		return mav;
+		//return mav;
+	//}
+
+	@RequestMapping(value ="/user/search" ,method = RequestMethod.POST)
+	public String search(@RequestParam(name="keyword") String keyword, Model model ) {
+		List<User> result = userService.searchpoint(keyword);
+
+		model.addAttribute("userlist", result);
+
+		return "user/list";
 	}
 
 	//-----------------------------------------------------
