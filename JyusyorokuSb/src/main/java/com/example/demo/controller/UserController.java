@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -19,6 +20,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.example.demo.dto.UserRequest;
 import com.example.demo.dto.UserUpdateRequest;
+import com.example.demo.dto.aGroup;
 import com.example.demo.entity.User;
 import com.example.demo.service.UserService;
 
@@ -29,10 +31,19 @@ public class UserController {
 	UserService userService;
 
 	//一覧ページ
-	@GetMapping(value = "/user/list")
-	public String displayList(Model model) {
-		List<User> userlist = userService.searchAll();
+	//@GetMapping(value = "/user/list")
+	//public String displayList(Model model) {
+		//List<User> userlist = userService.searchAll();
 
+		//model.addAttribute("userlist", userlist);
+		//return "user/list";
+	//}
+
+	//一覧ページ
+	@RequestMapping //(value = "/user/list",method=RequestMethod.GET)
+	public String displayList(Model model,Pageable pageable) {
+		List<User> userlist = userService.searchAll(pageable);
+		model.addAttribute("page", userlist);
 		model.addAttribute("userlist", userlist);
 		return "user/list";
 	}
@@ -61,7 +72,7 @@ public class UserController {
 
 	//登録エラー出力
 	@RequestMapping(value = "/user/create", method = RequestMethod.POST)
-	public String create(@Validated @ModelAttribute UserRequest userRequest, BindingResult result, Model model) {
+	public String create(@Validated(aGroup.class) @ModelAttribute UserRequest userRequest, BindingResult result, Model model) {
 		if (result.hasErrors()) {
 			List<String> errorList = new ArrayList<String>();
 			for (ObjectError error : result.getAllErrors()) {
@@ -106,7 +117,7 @@ public class UserController {
 
 	//編集エラー出力
 	@RequestMapping(value="/user/{id}/createe",method=RequestMethod.POST)
-	public String createe(@Validated @ModelAttribute UserUpdateRequest userUpdateRequest,BindingResult result,@PathVariable Long id,Model model) {
+	public String createe(@Validated(aGroup.class) @ModelAttribute UserUpdateRequest userUpdateRequest,BindingResult result,@PathVariable Long id,Model model) {
 
 		//User user =userService.findById(id);
 

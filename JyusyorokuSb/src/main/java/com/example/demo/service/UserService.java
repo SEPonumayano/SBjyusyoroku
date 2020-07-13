@@ -5,6 +5,7 @@ import java.util.List;
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.example.demo.dto.UserRequest;
@@ -19,8 +20,12 @@ public class UserService {
 	@Autowired
 	private UserRepository userRepository;
 
-	public List<User> searchAll() {
-		return userRepository.searchAll();
+	//public List<User> searchAll() {
+		//return userRepository.searchAll();
+	//}
+
+	public List<User> searchAll(Pageable pageable) {
+		return userRepository.searchAll(pageable);
 	}
 
 	//主キー
