@@ -33,73 +33,58 @@ public class UserController {
 	@Autowired
 	UserService userService;
 
-	//一覧ページ
-	//@GetMapping(value = "/user/list")
-	//public String displayList(Model model) {
-		//List<User> userlist = userService.searchAll();
-
-		//model.addAttribute("userlist", userlist);
-		//return "user/list";
-	//}
-
-
-	//ページング
+	//一覧表示
 	@RequestMapping (value = "/user/list",method = RequestMethod.GET)
 	public String listpage(@Validated User user,BindingResult result,Model model, UserRequest userRequest,@PageableDefault(size=10)Pageable pageable) {
 
-		//一覧
+		//一覧取得
 		UserRequest word =new UserRequest();
 		String key=word.setKeyword(userRequest.getKeyword());
 
 		Page<User> wordpage;
-		PageWrapper<User> page;
 
 		if(key==null) {
 			wordpage=userService.getfindAllCnt(pageable);
-			page = new PageWrapper<User>(wordpage, "/user/list");
 		}
 		else {
 			wordpage = userService.getsearchPoint(userRequest,pageable);
-			page = new PageWrapper<User>(wordpage, "/user/list");
 		}
 
+		//電話番号ハイフン
+		//Pattern p = Pattern.compile("(\\d{3})(\\d{4})(\\d{4})");
+		//Matcher m =p.matcher(user.getTel());
+		//String tel1=m.replaceAll("$1-$2-$3");
 
-
-		//番号
-		//List<Customer> num=new ArrayList<Customer>();
-
-		//Page<User> wordpage =userService.getfindAllCnt(pageable);
-		//PageWrapper<User> page = new PageWrapper<User>(wordpage, "/user/list");
+		//ページング
+		PageWrapper<User> page = new PageWrapper<User>(wordpage, "/user/list");
 
 		model.addAttribute("userlist", wordpage);
 		model.addAttribute("page", page);
-		//model.addAttribute("num", num);
+		//model.addAttribute("tel", tel1);
+		model.addAttribute("keyword", key);
 		model.addAttribute("words",page.getContent());
 
 		return "/user/list";
 	}
 
 	//住所検索
-	@RequestMapping(value ="/user/seach" ,method = RequestMethod.POST)
+	@RequestMapping(value ="/user/{keyword}/list" ,method = RequestMethod.POST)
 	public String search(@ModelAttribute UserRequest userRequest,@Validated User user,BindingResult result, Model model,@PageableDefault(size=10)Pageable pageable ) {
 
 		UserRequest word =new UserRequest();
 		String keyword=word.setKeyword(userRequest.getKeyword());
 
 		Page<User> seachpage=null;
-		PageWrapper<User> page=null ;
 
 		if(keyword.isEmpty()) {
 			seachpage=userService.getfindAllCnt(pageable);
-			page = new PageWrapper<User>(seachpage, "/user/list");
 		}
 		else {
 			seachpage = userService.getsearchPoint(userRequest,pageable);
-			page = new PageWrapper<User>(seachpage, "/user/list");
 		}
 
 		//Page<User> seachpage = userService.getsearchPoint(userRequest,pageable);
-		//PageWrapper<User> page = new PageWrapper<User>(seachpage, "/user/list");
+		PageWrapper<User> page = new PageWrapper<User>(seachpage, "/user/list");
 
 		model.addAttribute("userlist",seachpage );
 		model.addAttribute("keyword",keyword );

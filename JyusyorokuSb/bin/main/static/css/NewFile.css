@@ -45,7 +45,9 @@ th,tb{
 
 table{
 	border-collapse: collapse;
+	table-layout:fixed;
 	width:950px;
+
 }
 
 th{

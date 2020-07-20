@@ -19,26 +19,18 @@ public class UserService {
 	@Autowired
 	private UserRepository userRepository;
 
-	//public List<User> searchAll() {
-		//return userRepository.searchAll();
-	//}
-
-	//総件数
+	//一覧、ページング
 	public Page<User> getfindAllCnt(Pageable pageable) {
 		return userRepository.findAllCnt(pageable);
 	}
-
-	//ページング
-
 
 	//主キー
 	public User findById(Long id) {
 		return userRepository.findById(id).get();
 	}
 
-	//検索
+	//検索、ページング
 	public Page<User> getsearchPoint(UserRequest userRequest,Pageable pageable) {
-		//Page<User> seachpage = userRepository.searchPoint(keyword,pageable);
 		UserRequest word =new UserRequest();
 		String keyword=word.setKeyword(userRequest.getKeyword());
 		return userRepository.searchPoint(keyword,pageable);

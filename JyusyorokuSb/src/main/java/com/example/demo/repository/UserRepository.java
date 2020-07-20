@@ -12,10 +12,6 @@ import com.example.demo.entity.User;
 
 @Repository
 public interface UserRepository extends JpaRepository<User, Long> {
-	//一覧
-	//@Query(value = "SELECT * FROM jyusyoroku WHERE delete_flg = 0", nativeQuery=true)
-	// List<User> searchAll();
-
 	//総件数
 	@Query(value = "SELECT * FROM jyusyoroku WHERE delete_flg = 0 ", nativeQuery=true)
 	Page<User> findAllCnt(Pageable pageable);
@@ -23,11 +19,6 @@ public interface UserRepository extends JpaRepository<User, Long> {
 	//検索
 	@Query(value = "SELECT * FROM jyusyoroku WHERE delete_flg = 0 AND address LIKE %:keyword% ", nativeQuery=true)
 	 Page<User> searchPoint(@Param("keyword")String keyword,Pageable pageable) ;
-
-
-//, ROW_NUMBER() OVER(ORDER BY id ASC)AS num
-
-	//(SELECT ROW_NUMBER() OVER (ORDER BY jyusyoroku.id) AS num)
 
 }
 

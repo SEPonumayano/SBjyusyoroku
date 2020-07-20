@@ -35,7 +35,7 @@ public class UserRequest implements Serializable {
 
 	//住所エラー
 	@NotEmpty(groups={aGroup.class},message = "住所は必須項目です")
-	@Size(groups={aGroup.class},max = 20, message = "住所は全角40文字以内で入力してください")
+	@Size(groups={aGroup.class},max = 40, message = "住所は全角40文字以内で入力してください")
 	private String address;
     public String getAddress() {
 		return address;
@@ -45,8 +45,7 @@ public class UserRequest implements Serializable {
 		this.address = address;
 	}
 
-	//電話番号エラー/空文字のエラー残ってる
-	//@Pattern(groups={aGroup.class},regexp ="^[0-9]{3}-[0-9]{4}-[0-9]{4}$" , message="電話番号は「000-0000-0000」の形式で入力してください")
+	//電話番号エラー
 	private String tel;
 	@AssertTrue(groups={aGroup.class}, message="電話番号は「000-0000-0000」の形式で入力してください")
 	public boolean getValid() {
@@ -67,7 +66,5 @@ public class UserRequest implements Serializable {
 	public void setTel(String tel) {
 		this.tel=tel;
 	}
-
-
 
 }
