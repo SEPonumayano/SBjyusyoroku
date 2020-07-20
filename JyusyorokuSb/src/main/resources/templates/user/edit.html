@@ -2,41 +2,42 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:th="http://www.thymeleaf.org">
 <head>
+<link rel="stylesheet" th:href="@{/css/NewFile.css}"/>
 <meta charset="UTF-8">
 <title>住所録編集画面</title>
 </head>
 <body>
 
-	<h1>住所録管理システム：住所録編集</h1>
+	<p>住所録管理システム：住所録編集</p>
 	<!-- 転送先 -->
-	<form th:action="@{/user/{id}/createe(id=*{id})}" th:object="${userUpdateRequest}"
+	<form class="item" th:action="@{/user/{id}/createe(id=*{id})}" th:object="${userUpdateRequest}"
 		th:method="post">
-		<br />
-		<!-- 名前 -->
 
-		名前*：<input type="text" name="name" th:field="*{name}" > <br />
-		<p th:text="${name}"></p>
+		<!-- 名前 -->
+		<dl>
+		<dt>名前*：</dt>
+		<dd><input type="text" name="name" th:field="*{name}" style="width:250px"></dd>
+		<!-- th:text="${name}" -->
 
 		<!-- 住所 -->
-		住所*：<input type="text" name="address" th:field="*{address}"> <br />
+		<dt>住所*：</dt>
+		<dd><input type="text" name="address" th:field="*{address}" style="width:500px"></dd>
 
 		<!-- 電話番号 -->
-		電話番号：<input type="tel" name="tel" th:field="*{tel}"> <br />
-
-		<!-- ID ->
-		<p th:text="${id}"></p>
-		 <input type="hidden" name="id" th:field="${id}">
+		<dt>電話番号：</dt>
+		<dd><input type="tel" name="tel" th:field="*{tel}" style="width:250px"></dd>
 
 		<!-- エラー表示 -->
-		<table>
-			<tr th:if="${validationError}" th:each="error : ${validationError}">
-				<td style="color: red;" th:text="${error}"></td>
-			</tr>
-		</table>
+		</dl>
+	    <div class="err" th:if="${validationError}" th:each="error : ${validationError}" th:text="${error}">
+		</div>
 
 		<!-- ボタン -->
-		<input type="submit" value="確認">
-		<a th:href="@{/user/list}"><button type="button">戻る</button></a>
+		<br/>
+        <div class="button_wrapper">
+		<input type="submit" value="確認" style="width:250px;height:20px;">
+		<a th:href="@{/user/list}"><button type="button" style="width:250px;height:20px;">戻る</button></a>
+		</div>
 	</form>
 
 </body>

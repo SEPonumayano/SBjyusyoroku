@@ -1,10 +1,10 @@
 package com.example.demo.service;
 
-import java.util.List;
-
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.example.demo.dto.UserRequest;
@@ -19,19 +19,17 @@ public class UserService {
 	@Autowired
 	private UserRepository userRepository;
 
-	public List<User> searchAll() {
-		return userRepository.searchAll();
-	}
+	//public List<User> searchAll() {
+		//return userRepository.searchAll();
+	//}
 
 	//総件数
-	public int findAllCnt() {
-		return userRepository.findAllCnt();
+	public Page<User> getfindAllCnt(Pageable pageable) {
+		return userRepository.findAllCnt(pageable);
 	}
 
 	//ページング
-	public List<User> findListPaging(int startIndex, int pageSize) {
-		return userRepository.findListPaging(startIndex,pageSize);
-	}
+
 
 	//主キー
 	public User findById(Long id) {
@@ -39,9 +37,11 @@ public class UserService {
 	}
 
 	//検索
-	public  List<User> searchpoint(String keyword) {
-		List<User> result = userRepository.searchPoint(keyword);
-		return result;
+	public Page<User> getsearchPoint(UserRequest userRequest,Pageable pageable) {
+		//Page<User> seachpage = userRepository.searchPoint(keyword,pageable);
+		UserRequest word =new UserRequest();
+		String keyword=word.setKeyword(userRequest.getKeyword());
+		return userRepository.searchPoint(keyword,pageable);
 	}
 
 

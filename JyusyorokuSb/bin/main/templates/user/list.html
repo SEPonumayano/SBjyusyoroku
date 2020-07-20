@@ -1,34 +1,77 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 <head>
+<link rel="stylesheet" th:href="@{/css/NewFile.css}"/>
 <meta charset="UTF-8">
 <title>住所録一覧</title>
 </head>
 <body>
-<h1>住所録管理システム：住所録一覧</h1>
+<p>住所録管理システム：住所録一覧</p>
 
 	<!-- 登録ボタン -->
-	<div>
-		<a th:href="@{/user/add}"><button type="button">新規登録</button></a>
+	<div class="menu">
+	<div class="add">
+		<a th:href="@{/user/add}"><button type="button" style="width:200px">新規登録</button></a>
 	</div>
 
 	<!-- 住所検索 -->
-	住所：<form th:action="@{/user/search}" th:method="post"><input type="text" name="keyword"><input type=submit value="検索"></form>
+	<div class="serch">
+	<form class="seach" th:action="@{/user/seach}" th:object="${UserRequest}" th:method="post">
+	<div class="seachAddr">住所：</div>
+	<div class="seachAddr"><input class="seachword" type="text" name="keyword" th:value="${keyword}" style="width:200px">
+	<input class="sss" type=submit value="検索" style="width:204px">
+	</div></form>
+</div>
+</div>
+<br/>
+
+<!-- ページング -->
+
+	<div th:fragment='paginationbar'>
+	<ul>
+	<li th:class="${page.firstPage}?'disabled':''" style="display:inline">
+    <span th:if='${page.firstPage}'>＜＜</span>
+    <a th:if='${not page.firstPage}' th:href='@{${page.url}(page=0,size=${page.size})}'>＜＜</a>
+    </li>
+	<li th:class="${page.hasPreviousPage}? '' :'disabled'" style="display:inline">
+	<span th:if='${not page.hasPreviousPage}'>＜</span>
+	<a th:if='${page.hasPreviousPage}' th:href='@{${page.url}(page=${page.number-2},size=${page.size})}'>＜</a>
+	</li>
+	<li th:each='item : ${page.items}' th:class="${item.current}? 'active' : ''" style="display:inline">
+	<span th:if='${item.current}' th:text='${item.number}'>1</span>
+	<a th:if='${not item.current}' th:href='@{${page.url}(page=${item.number-1},size=${page.size})}'>
+    <span th:text='${item.number}'>1</span>
+    </a>
+	</li>
+	<li th:class="${page.hasNextPage}? '' : 'disabled'" style="display:inline">
+    <span th:if='${not page.hasNextPage}'>＞</span>
+    <a th:if='${page.hasNextPage}' th:href='@{${page.url}(page=${page.number},size=${page.size})}'>＞</a>
+    </li>
+    <li th:class="${page.lastPage}? 'disabled' : ''" style="display:inline">
+    <span th:if='${page.lastPage}'>＞＞</span>
+    <a th:if='${not page.lastPage}' th:href='@{${page.url}(page=${page.totalPages - 1},size=${page.size})}'>＞＞</a>
+    </li>
+	</ul></div>
 
 	<!-- 一覧 -->
 	<table border="1">
-			<tr>
-				<th>ID</th>
-				<th>名前</th>
-				<th>住所</th>
-				<th>電話番号</th>
+			<tr bgcolor="#8490c8">
+				<th style="width:22px; max-width:22px;">ID</th>
+				<th style="width:220px; max-width:220px;" >名前</th>
+				<th style="width:440px; max-width:440px;" >住所</th>
+				<th style="width:220px; max-width:220px;">電話番号</th>
+				<th style="width:17px"></th>
+				<th style="width:17px"></th>
+
+
 			</tr>
 			<tr th:each="user : ${userlist}" th:object="${user}">
-				<td th:text="${user.id}"></td>
-				<td th:text="${user.name}"></td>
-				<td th:text="${user.address}"></td>
-				<td th:text="${user.tel}"></td>
-				<td>
+				<td  align="center" th:text="${page.number}"></td>
+				<td class="box-read"  style="max-width:220px;" align="center" th:text="${user.name}"></td>
+				<td class="box-read" style="max-width:450px;" align="center" th:text="${user.address}"></td>
+				<td  align="center" th:text="${user.tel}"></td>
+
+				<td >
 				<form th:action="@{/user/{id}/edit(id=*{id})}" th:method="post">
 				<input type="hidden" name="id" th:value="${user.id}">
 				<input type="submit" value="編集"></form><!-- </a>--></td>
@@ -40,36 +83,38 @@
 	</table>
 
 	<!-- ページング -->
-	<nav aria-label="Page navigation example">
-	<ul>
-	<li><a th:herf="@{/?page=1}" aria-label="Previous">
-	<span aria-hidden="true">＜＜</span>
-	</a>
-	</li>
-	<li>
-	<a th:href="@{/?page={page} (page=${pagination.prevBlock})}" aria-label="previous">
-	<span aria-hidden="true">＜</span>
-	</a>
-	</li>
-	<th:block th:with="start = ${pagination.startPage}, end=${pagination.endPage}">
-	<li th:with="start = ${pagination.startPage}, end=${pagination.endPage}"
-	th:each="pageButton:${#numbers.sequence(start,end)}">
-	<a th:href="@{/?page={page} (page=${pageButton})}" th:text=${pageButton}></a>
-	</li>
-	</th:block>
-	<li>
-	<a th:herf="@{?page={page}(page=${pagination.nextBlock})}" aria-label="Next">
-	<span aria-hidden="true">＞</span>
-	</a>
-	</li>
-	<li>
-    <a th:herf="@{?page={page}(page=${pagination.totalPageCnt})}" aria-label="previous">
-	<span aria-hidden="true">＞＞</span>
-	</a>
-	</li>
-	</ul>
-	</nav>
 
+	<div th:fragment='paginationbar'>
+	<ul>
+	<li th:class="${page.firstPage}?'disabled':''" style="display:inline">
+    <span th:if='${page.firstPage}'>＜＜</span>
+    <a th:if='${not page.firstPage}' th:href='@{${page.url}(keyword=${keyword},page=0,size=${page.size})}'>＜＜</a>
+    </li>
+	<li th:class="${page.hasPreviousPage}? '' :'disabled'" style="display:inline">
+	<span th:if='${not page.hasPreviousPage}'>＜</span>
+	<a th:if='${page.hasPreviousPage}' th:href='@{${page.url}(keyword=${keyword},page=${page.number-2},size=${page.size})}'>＜</a>
+	</li>
+	<li th:each='item : ${page.items}' th:class="${item.current}? 'active' : ''" style="display:inline">
+	<span th:if='${item.current}' th:text='${item.number}'>1</span>
+	<a th:if='${not item.current}' th:href='@{${page.url}(keyword=${keyword},page=${item.number-1},size=${page.size})}'>
+    <span th:text='${item.number}'>1</span>
+    </a>
+	</li>
+	<li th:class="${page.hasNextPage}? '' : 'disabled'" style="display:inline">
+    <span th:if='${not page.hasNextPage}'>＞</span>
+    <a th:if='${page.hasNextPage}' th:href='@{${page.url}(keyword=${keyword},page=${page.number},size=${page.size})}'>＞</a>
+    </li>
+    <li th:class="${page.lastPage}? 'disabled' : ''" style="display:inline">
+    <span th:if='${page.lastPage}'>＞＞</span>
+    <a th:if='${not page.lastPage}' th:href='@{${page.url}(keyword=${keyword},page=${page.totalPages - 1},size=${page.size})}'>＞＞</a>
+    </li>
+	</ul></div>
+<br/>
+
+<!-- 新規登録ボタン -->
+<div class="add">
+		<a th:href="@{/user/add}"><button type="button" style="width:200px">新規登録</button></a>
+	</div>
 	<!-- server.port=8090 -->
 </body>
 </html>

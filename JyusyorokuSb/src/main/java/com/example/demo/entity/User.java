@@ -8,17 +8,20 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.TableGenerator;
 
 @Entity
 @Table(name = "jyusyoroku")
 public class User implements Serializable {
 
 	//DBの情報引き出す用
+	private static final long serialVersionUID = -870708489937857961L;
 
-	//id
+	//id generator="seqTable"
 	@Id
-	@Column(name = "id")
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@TableGenerator(name="seqTable", table="seq_table", pkColumnName="seq_name", pkColumnValue="word_seq", valueColumnName="seq_value")
+	@Column(name = "id")
 	private Long id;
 
 	public Long getId() {
@@ -75,6 +78,7 @@ public class User implements Serializable {
 	//削除プラグ
 	@Column(name = "delete_flg")
 	private String delete_flg;
+
 
 	public String getDelete_flg() {
 		return delete_flg;

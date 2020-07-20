@@ -1,33 +1,38 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 <head>
+<link rel="stylesheet" th:href="@{/css/NewFile.css}"/>
 <meta charset="UTF-8">
 <title>住所録登録</title>
 </head>
 <body>
-	<h1>住所録管理システム：住所録登録</h1>
+	<p>住所録管理システム：住所録登録</p>
 	<!-- 転送先 -->
-	<form th:action="@{/user/create}" th:object="${UserRequest}" th:method="post"><br />
+	<form class="item" th:action="@{/user/create}" th:object="${UserRequest}" th:method="post"><br />
 
 		<!-- 名前 -->
-		名前*：<input type="text" name="name" > <br />
+		<dl>
+		<dt>名前*：</dt>
+		<dd><input type="text" name="name" style="width:250px"></dd>
 
 		<!-- 住所 -->
-		住所*：<input type="text" name="address"> <br />
+		<dt>住所*：</dt>
+		<dd><input type="text" name="address" style="width:500px"></dd>
 
 		<!-- 電話番号 -->
-		電話番号：<input type="tel" name="tel"> <br />
+		<dt>電話番号：</dt>
+		<dd><input type="tel" name="tel" style="width:250px"></dd>
+		</dl>
 
 		<!-- エラー表示 -->
-		<table>
-			<tr th:if="${validationError}" th:each="error : ${validationError}">
-				<td style="color: red;" th:text="${error}"></td>
-			</tr>
-		</table>
+		<div class="err" th:if="${validationError}" th:each="error : ${validationError}" th:text="${error}">
+		</div>
 
 		<!-- ボタン -->
-		<br /><input type="submit" value="確認">
-		<a th:href="@{/user/list}"><button type="button">戻る</button></a>
+		<br />
+		<div class="button_wrapper">
+		</div><input type="submit" value="確認" style="width:250px;height:20px;">
+		<a th:href="@{/user/list}"><button type="button" style="width:250px;height:20px;">戻る</button></a>
 	</form>
 </body>
 </html>

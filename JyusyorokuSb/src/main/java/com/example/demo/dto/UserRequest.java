@@ -10,19 +10,14 @@ import javax.validation.constraints.Size;
 //エラー表示内容
 public class UserRequest implements Serializable {
 
-	//private String name;
-	//private String address;
-	//private String tel;
 	private String keyword;
-
-
 
 	public String getKeyword() {
 		return keyword;
 	}
 
-	public void setKeyword(String keyword) {
-		this.keyword = keyword;
+	public String setKeyword(String keyword) {
+		return this.keyword = keyword;
 	}
 
 

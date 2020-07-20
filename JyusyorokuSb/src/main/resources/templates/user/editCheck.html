@@ -1,38 +1,39 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 <head>
+<link rel="stylesheet" th:href="@{/css/NewFile.css}"/>
 <meta charset="UTF-8">
 <title>住所録編集確認画面</title>
 </head>
 <body>
-<h1>住所録管理システム：住所録編集</h1>
+<p>住所録管理システム：住所録編集</p>
 <!-- 転送先 -->
-	<form th:action="@{/user/creatt}" th:object="${userUpdateRequest}" th:method="post">
+	<form class="item" th:action="@{/user/creatt}" th:object="${userUpdateRequest}" th:method="post">
 
 		<!-- 名前 -->
-		名前*：
-		<p th:text="*{name}"></p>
-		<br />
+		<dl>
+		<dt>名前*：</dt>
+		<dd th:text="*{name}"></dd>
 
 		<!-- 住所 -->
-		住所*：
-		<p th:text="*{address}"></p>
-		<br />
+		<dt>住所*：</dt>
+		<dd th:text="*{address}"></dd>
 
 		<!-- 電話番号 -->
-		電話番号：
-		<p th:text="*{tel}"></p>
-		<br />
+		<dt>電話番号：</dt>
+		<dd th:text="*{tel}"></dd>
+		</dl>
 
-
+<div class="button_wrapper">
 		<input type="hidden" name="name" th:field="*{name}">
 		<input type="hidden" name="address" th:field="*{address}">
 		<input type="hidden" name="tel" th:field="*{tel}">
 		<input type="hidden" th:field="*{id}">
 
 
-<input type="submit"  value="登録">
-<a th:href="@{/user/{id}/edit(id=*{id})}"><button type="button">戻る</button></a>
+<input type="submit"  value="登録" style="width:250px;height:20px;">
+<a th:href="@{/user/{id}/edit(id=*{id})}"><button type="button" style="width:250px;height:20px;">戻る</button></a>
+</div>
 </form>
 </body>
 </html>

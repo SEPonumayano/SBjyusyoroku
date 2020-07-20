@@ -4,6 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -14,9 +17,9 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.SessionAttributes;
 
-import com.example.demo.dto.Pagination;
+import com.example.demo.dto.PageWrapper;
 import com.example.demo.dto.UserRequest;
 import com.example.demo.dto.UserUpdateRequest;
 import com.example.demo.dto.aGroup;
@@ -25,6 +28,7 @@ import com.example.demo.service.UserService;
 
 
 @Controller
+@SessionAttributes("keyword")
 public class UserController {
 	@Autowired
 	UserService userService;
@@ -38,47 +42,69 @@ public class UserController {
 		//return "user/list";
 	//}
 
-	//一覧ページ
-	@GetMapping (value = "/user/list")
-	public String displayList(Model model,@RequestParam(defaultValue="1") int page) {
+
+	//ページング
+	@RequestMapping (value = "/user/list",method = RequestMethod.GET)
+	public String listpage(@Validated User user,BindingResult result,Model model, UserRequest userRequest,@PageableDefault(size=10)Pageable pageable) {
 
 		//一覧
-		List<User> userlist =userService.searchAll();
+		UserRequest word =new UserRequest();
+		String key=word.setKeyword(userRequest.getKeyword());
 
-		//件数
-		int totalListCnt =userService.findAllCnt();
-		Pagination pagination =new Pagination(totalListCnt,page);
-		int startIndex =pagination.getStartIndex();
-		int pageSize =pagination.getPageSize();
+		Page<User> wordpage;
+		PageWrapper<User> page;
 
-		//ブロック位置
-		List<User> listCount =userService.findListPaging(startIndex,pageSize);
+		if(key==null) {
+			wordpage=userService.getfindAllCnt(pageable);
+			page = new PageWrapper<User>(wordpage, "/user/list");
+		}
+		else {
+			wordpage = userService.getsearchPoint(userRequest,pageable);
+			page = new PageWrapper<User>(wordpage, "/user/list");
+		}
 
-		model.addAttribute("userlist", userlist);
-		model.addAttribute("listCount", listCount);
-		model.addAttribute("pagination",pagination);
 
-		return "user/list";
+
+		//番号
+		//List<Customer> num=new ArrayList<Customer>();
+
+		//Page<User> wordpage =userService.getfindAllCnt(pageable);
+		//PageWrapper<User> page = new PageWrapper<User>(wordpage, "/user/list");
+
+		model.addAttribute("userlist", wordpage);
+		model.addAttribute("page", page);
+		//model.addAttribute("num", num);
+		model.addAttribute("words",page.getContent());
+
+		return "/user/list";
 	}
 
 	//住所検索
-	//@RequestMapping(value ="/user/search" ,method = RequestMethod.POST)
-	//public ModelAndView search(ModelAndView mav,@RequestParam(name="keyword") String keyword) {
+	@RequestMapping(value ="/user/seach" ,method = RequestMethod.POST)
+	public String search(@ModelAttribute UserRequest userRequest,@Validated User user,BindingResult result, Model model,@PageableDefault(size=10)Pageable pageable ) {
 
-		//mav.setViewName("/user/list");
-		//mav.addObject("keyword",keyword);
-		//List<User> result = userService.searchpoint(keyword);
-		//mav.addObject("userlist",result);
-		//mav.addObject("resultSize",result.size());
+		UserRequest word =new UserRequest();
+		String keyword=word.setKeyword(userRequest.getKeyword());
 
-		//return mav;
-	//}
+		Page<User> seachpage=null;
+		PageWrapper<User> page=null ;
 
-	@RequestMapping(value ="/user/search" ,method = RequestMethod.POST)
-	public String search(@RequestParam(name="keyword") String keyword, Model model ) {
-		List<User> result = userService.searchpoint(keyword);
+		if(keyword.isEmpty()) {
+			seachpage=userService.getfindAllCnt(pageable);
+			page = new PageWrapper<User>(seachpage, "/user/list");
+		}
+		else {
+			seachpage = userService.getsearchPoint(userRequest,pageable);
+			page = new PageWrapper<User>(seachpage, "/user/list");
+		}
 
-		model.addAttribute("userlist", result);
+		//Page<User> seachpage = userService.getsearchPoint(userRequest,pageable);
+		//PageWrapper<User> page = new PageWrapper<User>(seachpage, "/user/list");
+
+		model.addAttribute("userlist",seachpage );
+		model.addAttribute("keyword",keyword );
+		model.addAttribute("page", page);
+		model.addAttribute("words",page.getContent());
 
 		return "user/list";
 	}
