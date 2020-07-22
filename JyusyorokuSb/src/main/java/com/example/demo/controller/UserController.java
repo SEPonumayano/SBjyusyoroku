@@ -2,6 +2,8 @@ package com.example.demo.controller;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -143,8 +145,15 @@ public class UserController {
 	@RequestMapping("/user/{id}/edit")
 	public String displayEdit(@PathVariable("id") Long id,Model model) {
 		User user =userService.findById(id);
+		String tel=user.getTel();
+
+		//電話番号ハイフン
+		Pattern p = Pattern.compile("(\\d{3})(\\d{4})(\\d{4})");
+		Matcher m =p.matcher(tel);
+		String tel1=m.replaceAll("$1-$2-$3");
 
 		model.addAttribute("userUpdateRequest",user);
+		model.addAttribute("tel1",tel1);
 		return "user/edit";
 	}
 

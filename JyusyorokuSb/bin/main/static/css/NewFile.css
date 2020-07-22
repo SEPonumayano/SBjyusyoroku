@@ -45,6 +45,7 @@ th,tb{
 
 table{
 	border-collapse: collapse;
+	empty-cells:hide;
 	table-layout:fixed;
 	width:950px;
 
@@ -67,6 +68,7 @@ tr{
     white-space: nowrap;
 
 }
+
 
 .err{
 	color:#de4d4d;

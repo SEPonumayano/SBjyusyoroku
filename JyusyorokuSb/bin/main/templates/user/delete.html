@@ -17,7 +17,9 @@
 <dd th:text="*{address}"></dd>
 
 <dt>電話番号:</dt>
-<dd th:text="*{tel}"></dd>
+<!--<dd th:text="*{tel}"></dd>-->
+<dd th:unless='*{#strings.isEmpty(tel)}' th:text="*{#strings.substring(tel,0,3)}+'-'+*{#strings.substring(tel,3,7)}+'-'+*{#strings.substring(tel,7,11)}">
+<dd th:if='*{#strings.isEmpty(tel)}' th:text="*{tel}"></dd>
 </dl>
 <br/>
 <div class="button_wrapper">

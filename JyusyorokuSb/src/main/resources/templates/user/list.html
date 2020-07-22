@@ -56,7 +56,7 @@
 	<!-- 一覧 -->
 	<table border="1" >
 			<tr bgcolor="#8490c8">
-				<th style="width:22px; max-width:22px;">ID</th>
+				<th style="width:22px; max-width:22px;">No</th>
 				<th style="width:334px; max-width:334px;" >名前</th>
 				<th style="width:360px; max-width:360px;" >住所</th>
 				<th style="width:150px; max-width:150px;">電話番号</th>
@@ -67,7 +67,10 @@
 				<td  align="center" th:text="${nameStat.count}+${page.size}*(${page.number}-1)"></td>
 				<td class="box-read"  style="max-width:334px;" align="center" th:text="${user.name}"></td>
 				<td class="box-read" style="max-width:360px;" align="center" th:text="${user.address}"></td>
-				<td  align="center" th:text="${user.tel}"></td>
+				<td  align="center" th:unless='${#strings.isEmpty(user.tel)}' th:text="${#strings.substring(user.tel,0,3)}+'-'+${#strings.substring(user.tel,3,7)}+'-'+${#strings.substring(user.tel,7,11)}">
+				<td th:if='${#strings.isEmpty(user.tel)}' th:text="${user.tel}">
+				</td>
+				<!-- ${#strings.substring(user.tel,0,3)}+'-'+${#strings.substring(user.tel,3,7)}+'-'+${#strings.substring(user.tel,7,11)} -->
 
 				<td >
 				<form th:action="@{/user/{id}/edit(id=*{id})}" th:method="post">
